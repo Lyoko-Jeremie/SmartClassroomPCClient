@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.label1 = new System.Windows.Forms.Label();
             this.buttonHide = new System.Windows.Forms.Button();
             this.buttonClear = new System.Windows.Forms.Button();
@@ -35,6 +36,7 @@
             this.inputTextBox = new System.Windows.Forms.TextBox();
             this.buttonSubmit = new System.Windows.Forms.Button();
             this.InputCheckBox = new System.Windows.Forms.CheckBox();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
             // label1
@@ -74,6 +76,9 @@
             // 
             // informationTextBox
             // 
+            this.informationTextBox.AcceptsReturn = true;
+            this.informationTextBox.AcceptsTab = true;
+            this.informationTextBox.AllowDrop = true;
             this.informationTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.informationTextBox.BackColor = System.Drawing.Color.Black;
@@ -88,8 +93,6 @@
             this.informationTextBox.Size = new System.Drawing.Size(588, 177);
             this.informationTextBox.TabIndex = 4;
             this.informationTextBox.TabStop = false;
-            this.informationTextBox.Text = "信息界面\r\n系统信息\r\n进程LOG\r\n\r\n信息界面\r\n系统信息\r\n进程LOG\r\n\r\n信息界面\r\n系统信息\r\n进程LOG\r\n\r\n信息界面\r\n系统信息\r\n进程LOG\r" +
-    "\n\r\n信息界面\r\n系统信息\r\n进程LOG\r\n\r\n信息界面\r\n系统信息\r\n进程LOG\r\n\r\n";
             // 
             // inputTextBox
             // 
@@ -127,6 +130,10 @@
             this.InputCheckBox.UseVisualStyleBackColor = true;
             this.InputCheckBox.CheckedChanged += new System.EventHandler(this.InputCheckBox_CheckedChanged);
             // 
+            // timer1
+            // 
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -161,6 +168,7 @@
         private System.Windows.Forms.TextBox inputTextBox;
         private System.Windows.Forms.Button buttonSubmit;
         private System.Windows.Forms.CheckBox InputCheckBox;
+        private System.Windows.Forms.Timer timer1;
     }
 }
 

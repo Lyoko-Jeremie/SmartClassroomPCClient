@@ -12,10 +12,14 @@ namespace SmartClassroomPCClient
 {
     public partial class Form1 : Form
     {
+        private String _informationText = "SmartClassroom PC Client 正在启动......";
+
+
         public Form1()
         {
             InitializeComponent();
             CommandToolHide();
+            timer1.Start();
         }
 
         private void InputCheckBox_CheckedChanged(object sender, EventArgs e)
@@ -42,6 +46,26 @@ namespace SmartClassroomPCClient
             this.buttonClear.Show();
             this.buttonSubmit.Show();
             this.inputTextBox.Show();
+        }
+
+        private void InformationTextLine(String line)
+        {
+            lock (_informationText)
+            {
+                _informationText += "\r\n" + line;
+                if (_informationText.Length > 8192)
+                    _informationText = _informationText.Substring(_informationText.Length-8192);
+            }
+        }
+        
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            lock (_informationText)
+            {
+                this.informationTextBox.Text = _informationText;
+            }
+            this.informationTextBox.Select(this.informationTextBox.TextLength, 0);
+            this.informationTextBox.ScrollToCaret();
         }
     }
 }
