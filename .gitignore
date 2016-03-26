@@ -1,0 +1,17 @@
+*.opensdf
+*.sdf
+x64/*
+*/x64/*
+??_*/*
+.vs/*
+*/obj/*
+*.vcxproj.*
+*.vcxproj
+*.tlog
+*.log
+*.ilk
+*.obj
+*.pdb
+*.idb
+*.cache
+*.resources
