@@ -11,8 +11,15 @@ namespace SmartClassroomPCClient
     public static class Config
     {
         public static IPAddress ServerIp;
-        public static uint ServerPort;
+        public static int ServerPort;
+        public static EndPoint ServerEndPoint;
 
+        public static void WriteConfig()
+        {
+            IniFile file = new IniFile();
+            file.Write("Ip", ServerIp.ToString(), "Server");
+            file.Write("Port", ServerPort.ToString(), "Server");
+        }
         public static bool ReadConfig()
         {
             bool ok = true;
@@ -28,7 +35,8 @@ namespace SmartClassroomPCClient
             {
                 var ip = file.Read("Ip", "Server");
                 Program.MainForm.InformationTextLineInfo("Configed ServerIP:" + ip);
-                ServerIp = new IPAddress(Encoding.ASCII.GetBytes(ip));
+                ServerIp = IPAddress.Parse(ip);
+                Program.MainForm.InformationTextLineInfo("Configed ServerIP Version:" + ServerIp.AddressFamily);
             }
 
             if (!file.KeyExists("Port", "Server"))
@@ -40,9 +48,11 @@ namespace SmartClassroomPCClient
             {
                 var port = file.Read("Port", "Server");
                 Program.MainForm.InformationTextLineInfo("Configed ServerPort:" + port);
-                ServerPort = Convert.ToUInt32(port);
+                ServerPort = Convert.ToInt32(port);
             }
-            
+
+            ServerEndPoint = new IPEndPoint(ServerIp, ServerPort);
+
             return ok;
         }
     }

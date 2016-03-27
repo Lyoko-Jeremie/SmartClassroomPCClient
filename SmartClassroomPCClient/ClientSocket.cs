@@ -16,22 +16,19 @@ namespace SmartClassroomPCClient
 
         // 做心跳连接 并从服务器获取指令  
         // 短连接模式  30s一次连接
-        public SocketTaskFlag KeepAliveSocket(IPAddress addr, int port)
+        public SocketTaskFlag KeepAliveSocket(EndPoint endPoint)
         {
-            Socket socket = new Socket(addr.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
-
-            socket.ReceiveTimeout = 5000;
+            Socket socket = new Socket(endPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp)
+            { ReceiveTimeout = 5000 };
 
             try
             {
-                socket.Connect(new IPEndPoint(addr, port));
+                socket.Connect(endPoint);
             }
             catch (Exception)
             {
                 return SocketTaskFlag.ConnectFail;
             }
-
-
 
             try
             {

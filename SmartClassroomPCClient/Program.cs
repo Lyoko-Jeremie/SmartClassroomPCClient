@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Timer = System.Threading.Timer;
 
 namespace SmartClassroomPCClient
 {
@@ -24,17 +27,33 @@ namespace SmartClassroomPCClient
         private static readonly Thread BackgroundThread = new Thread(new ThreadStart(StartBackgroundThreadMain));
         private static bool _isBackgroundThreadRun = false;
         private static Form1 _mainForm;
+        private static System.Threading.Timer _timer_KeepAlive;
 
         public static Form1 MainForm => _mainForm;
 
         [STAThread]
         public static void StartBackgroundThread()
         {
-            if (!_isBackgroundThreadRun)
+            if (_isBackgroundThreadRun) return;
+            BackgroundThread.SetApartmentState(ApartmentState.STA);
+            BackgroundThread.Start();
+            _isBackgroundThreadRun = true;
+        }
+
+        private static void KeepAliveTimerThread(object state)
+        {
+            _mainForm.InformationTextLineInfo("KeepAliveTimerThread");
+            ClientSocket cs = new ClientSocket();
+            var r = cs.KeepAliveSocket(Config.ServerEndPoint);
+            _mainForm.InformationTextLineInfo("KeepAliveTimerThreadEnd");
+            if (r == SocketTaskFlag.ConnectFail)
             {
-                BackgroundThread.SetApartmentState(ApartmentState.STA);
-                BackgroundThread.Start();
-                _isBackgroundThreadRun = true;
+                _mainForm.InformationTextLineError("KeepAliveSocket:" + r);
+                _timer_KeepAlive.Change(5 * 1000, 5 * 1000);
+            }
+            else
+            {
+                _timer_KeepAlive.Change(30 * 1000, 30 * 1000);
             }
         }
 
@@ -42,7 +61,20 @@ namespace SmartClassroomPCClient
 
         private static void StartBackgroundThreadMain()
         {
-            Config.ReadConfig();
+            if (Config.ReadConfig())
+            {
+                _timer_KeepAlive = new System.Threading.Timer(new System.Threading.TimerCallback(KeepAliveTimerThread), null, 0, 30 * 1000);
+            }
+            else
+            {
+                //Config.ServerIp = IPAddress.Parse("127::1");
+                //Config.ServerPort = 7864;
+                //Config.WriteConfig();
+                _mainForm.InformationTextLineError("ReadConfig Error...Exit.....");
+                Thread.Sleep(5000);
+                System.Environment.Exit(-1);
+            }
+
             //while (true)
             //{
             //    _mainForm.InformationTextLine("SmartClassroom");
