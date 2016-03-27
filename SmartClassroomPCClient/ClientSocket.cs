@@ -36,11 +36,19 @@ namespace SmartClassroomPCClient
             try
             {
                 socket.Send(SocketFlag.KeepAliveBegin);
-
-                // TODO 接收任务
+                socket.Send(SocketFlag.KeepAliveVersion);
+                socket.Send(SocketFlag.KeepAliveVersionNumber);
                 ReciveFormat(socket, SocketFlag.KeepAliveOk);
 
-                socket.Send(SocketFlag.KeepAliveEnd);
+                // 接收任务
+                ReciveFormat(socket, SocketFlag.TaskBegin);
+                SocketTaskFlag task = TaskBuff2TaskFlag(ReciveBuff(socket));
+                ReciveFormat(socket, SocketFlag.TaskEnd);
+                socket.Send(SocketFlag.TaskEndOk);
+
+                // TODO 这里进行未来的协议扩展
+                ReciveFormat(socket, SocketFlag.KeepAliveEnd);
+                socket.Send(SocketFlag.KeepAliveEndOk);
             }
             catch (Exception)
             {
@@ -66,6 +74,40 @@ namespace SmartClassroomPCClient
             }
         }
 
+        // 接受一个值
+        private byte[] ReciveBuff(Socket socket)
+        {
+            byte[] buff = { 0x00, 0x00, 0x00, 0x00 };
+            int ir = socket.Receive(buff, 4, SocketFlags.None);
+            if (ir != 4)
+            {
+                throw new SocketTaskFlagException(SocketTaskFlag.ReciveTimeOut);
+            }
+            return buff;
+        }
+
+
+        private SocketTaskFlag TaskBuff2TaskFlag(byte[] buff)
+        {
+            if (CompareSocketFlag(buff, SocketFlag.TaskNoThing))
+            {
+                return SocketTaskFlag.TaskNoThing;
+            }
+            if (CompareSocketFlag(buff, SocketFlag.TaskShutdown))
+            {
+                return SocketTaskFlag.TaskShutdown;
+            }
+            if (CompareSocketFlag(buff, SocketFlag.TaskRestart))
+            {
+                return SocketTaskFlag.TaskRestart;
+            }
+            if (CompareSocketFlag(buff, SocketFlag.TaskLogout))
+            {
+                return SocketTaskFlag.TaskLogout;
+            }
+            return SocketTaskFlag.TaskUnknow;
+        }
+
         private bool CompareSocketFlag(byte[] a, byte[] b)
         {
             for (int i = 0; i != 4; ++i)
@@ -77,6 +119,7 @@ namespace SmartClassroomPCClient
             }
             return true;
         }
+
 
     }
 
@@ -121,11 +164,18 @@ namespace SmartClassroomPCClient
     // 通信标志数组
     public static class SocketFlag
     {
+        public static readonly byte[] KeepAliveVersionNumber = { 0x01, 0x00, 0x00, 0x00 };
+
         public static readonly byte[] KeepAliveBegin = { 0x00, 0x00, 0x00, 0x01 };
-        public static readonly byte[] KeepAliveOk = { 0x00, 0x00, 0x00, 0x02 };
-        public static readonly byte[] KeepAliveEnd = { 0x00, 0x00, 0x00, 0x03 };
+        public static readonly byte[] KeepAliveVersion = { 0x00, 0x00, 0x00, 0x02 };
+        public static readonly byte[] KeepAliveOk = { 0x00, 0x00, 0x00, 0x03 };
+        public static readonly byte[] KeepAliveEnd = { 0x00, 0x00, 0x00, 0x04 };
+        public static readonly byte[] KeepAliveEndOk = { 0x00, 0x00, 0x00, 0x05 };
+
         public static readonly byte[] TaskBegin = { 0x00, 0x00, 0x01, 0x01 };
         public static readonly byte[] TaskEnd = { 0x00, 0x00, 0x01, 0x02 };
+        public static readonly byte[] TaskEndOk = { 0x00, 0x00, 0x01, 0x03 };
+
         public static readonly byte[] TaskNoThing = { 0x00, 0x01, 0x00, 0x00 };
         public static readonly byte[] TaskShutdown = { 0x00, 0x01, 0x00, 0x01 };
         public static readonly byte[] TaskRestart = { 0x00, 0x01, 0x00, 0x02 };
@@ -141,13 +191,16 @@ namespace SmartClassroomPCClient
         KeepAliveFail,
         // 连接被中断
         ConnectAboart,
+        // 接收超时     在超时时还是没有接收到协议指定的足够多的内容
+        ReciveTimeOut,
         // 协议格式错误
         FormatError,
         // 连接且得到的任务
         TaskShutdown,
         TaskRestart,
         TaskLogout,
-        TaskNoThing
+        TaskNoThing,
+        TaskUnknow
     }
 
 
