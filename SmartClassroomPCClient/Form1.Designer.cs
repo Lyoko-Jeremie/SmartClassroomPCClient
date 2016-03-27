@@ -140,9 +140,13 @@
             // 
             // notifyIcon
             // 
+            this.notifyIcon.BalloonTipIcon = System.Windows.Forms.ToolTipIcon.Info;
+            this.notifyIcon.BalloonTipText = "SmartClassroom PC Client 已经最小化到右下角托盘图标了。\r\n您可以在任何时候双击图标调出界面，或者右键打开快捷菜单。";
+            this.notifyIcon.BalloonTipTitle = "SmartClassroom PC Client";
             this.notifyIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon.Icon")));
             this.notifyIcon.Text = "SmartClassroom PC Client";
             this.notifyIcon.Visible = true;
+            this.notifyIcon.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon_MouseDoubleClick);
             // 
             // Form1
             // 

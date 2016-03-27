@@ -101,7 +101,15 @@ namespace SmartClassroomPCClient
 
         private void buttonHide_Click(object sender, EventArgs e)
         {
-            //InformationTextLineInfo("Hide_Click");
+            InformationTextLineInfo("Hide_Click");
+            this.Hide();
+            notifyIcon.ShowBalloonTip(1000);
+        }
+
+        private void notifyIcon_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            InformationTextLineInfo("Icon_MouseDoubleClick");
+            this.Show();
         }
     }
 }
