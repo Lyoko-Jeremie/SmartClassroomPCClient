@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -14,15 +15,17 @@ namespace SmartClassroomPCClient
     {
         private String _informationText = "SmartClassroom PC Client 正在启动......";
 
-
         public Form1()
         {
             InitializeComponent();
+            BigTitile.MouseDown += MouseDownDrop;
+            this.MouseDown += MouseDownDrop;
+
             CommandToolHide();
             timer1.Start();
             Program.StartBackgroundThread();
         }
-         
+
         private void InputCheckBox_CheckedChanged(object sender, EventArgs e)
         {
             if (this.InputCheckBox.Checked)
@@ -49,16 +52,25 @@ namespace SmartClassroomPCClient
             this.inputTextBox.Show();
         }
 
+        public void InformationTextLineError(String line)
+        {
+            InformationTextLine("[Error] " + line);
+        }
+        public void InformationTextLineInfo(String line)
+        {
+            InformationTextLine("[Info] " + line);
+        }
+
         public void InformationTextLine(String line)
         {
             //lock (_informationText)
             {
                 _informationText += "\r\n" + line;
                 if (_informationText.Length > 8192)
-                    _informationText = _informationText.Substring(_informationText.Length-8192);
+                    _informationText = _informationText.Substring(_informationText.Length - 8192);
             }
         }
-        
+
         private void timer1_Tick(object sender, EventArgs e)
         {
             //lock (_informationText)
@@ -67,6 +79,29 @@ namespace SmartClassroomPCClient
             }
             this.informationTextBox.Select(this.informationTextBox.TextLength, 0);
             this.informationTextBox.ScrollToCaret();
+        }
+
+        // 窗口拖动
+        [DllImport("user32")]
+        private static extern bool ReleaseCapture();
+        [DllImport("user32")]
+        private static extern bool SendMessage(IntPtr hwnd, int wMsg, int wParam, int lParam);
+        const int WM_SYSCOMMAND = 0x0112;
+        const int SC_MOVE = 0Xf010;
+        const int HTCAPTION = 0x0002;
+        private void MouseDownDrop(object sender, MouseEventArgs e)
+        {
+            MouseDownDrop();
+        }
+        private void MouseDownDrop()
+        {
+            ReleaseCapture();
+            SendMessage(this.Handle, WM_SYSCOMMAND, SC_MOVE + HTCAPTION, 0);
+        }
+
+        private void buttonHide_Click(object sender, EventArgs e)
+        {
+            //InformationTextLineInfo("Hide_Click");
         }
     }
 }

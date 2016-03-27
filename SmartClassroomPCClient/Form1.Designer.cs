@@ -29,7 +29,8 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.label1 = new System.Windows.Forms.Label();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+            this.BigTitile = new System.Windows.Forms.Label();
             this.buttonHide = new System.Windows.Forms.Button();
             this.buttonClear = new System.Windows.Forms.Button();
             this.informationTextBox = new System.Windows.Forms.TextBox();
@@ -37,18 +38,20 @@
             this.buttonSubmit = new System.Windows.Forms.Button();
             this.InputCheckBox = new System.Windows.Forms.CheckBox();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.SuspendLayout();
             // 
-            // label1
+            // BigTitile
             // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("微软雅黑", 32F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label1.ForeColor = System.Drawing.Color.RoyalBlue;
-            this.label1.Location = new System.Drawing.Point(12, 9);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(588, 57);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "SmartClassroom PC Client";
+            this.BigTitile.AutoSize = true;
+            this.BigTitile.CausesValidation = false;
+            this.BigTitile.Font = new System.Drawing.Font("微软雅黑", 32F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.BigTitile.ForeColor = System.Drawing.Color.RoyalBlue;
+            this.BigTitile.Location = new System.Drawing.Point(12, 9);
+            this.BigTitile.Name = "BigTitile";
+            this.BigTitile.Size = new System.Drawing.Size(588, 57);
+            this.BigTitile.TabIndex = 1;
+            this.BigTitile.Text = "SmartClassroom PC Client";
             // 
             // buttonHide
             // 
@@ -61,6 +64,7 @@
             this.buttonHide.TabIndex = 1;
             this.buttonHide.Text = "Hide 隐藏";
             this.buttonHide.UseVisualStyleBackColor = false;
+            this.buttonHide.Click += new System.EventHandler(this.buttonHide_Click);
             // 
             // buttonClear
             // 
@@ -134,6 +138,12 @@
             // 
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
+            // notifyIcon
+            // 
+            this.notifyIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon.Icon")));
+            this.notifyIcon.Text = "SmartClassroom PC Client";
+            this.notifyIcon.Visible = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -147,7 +157,7 @@
             this.Controls.Add(this.informationTextBox);
             this.Controls.Add(this.buttonClear);
             this.Controls.Add(this.buttonHide);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.BigTitile);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
@@ -161,7 +171,7 @@
         }
 
         #endregion
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label BigTitile;
         private System.Windows.Forms.Button buttonHide;
         private System.Windows.Forms.Button buttonClear;
         private System.Windows.Forms.TextBox informationTextBox;
@@ -169,6 +179,7 @@
         private System.Windows.Forms.Button buttonSubmit;
         private System.Windows.Forms.CheckBox InputCheckBox;
         private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.NotifyIcon notifyIcon;
     }
 }
 

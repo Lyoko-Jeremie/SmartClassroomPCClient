@@ -25,6 +25,8 @@ namespace SmartClassroomPCClient
         private static bool _isBackgroundThreadRun = false;
         private static Form1 _mainForm;
 
+        public static Form1 MainForm => _mainForm;
+
         [STAThread]
         public static void StartBackgroundThread()
         {
@@ -36,14 +38,32 @@ namespace SmartClassroomPCClient
             }
         }
 
+        private delegate void Any();
+
         private static void StartBackgroundThreadMain()
         {
-            while (true)
-            {
-                _mainForm.InformationTextLine("SmartClassroom");
-                Thread.Sleep(10);
-            }
+            Config.ReadConfig();
+            //while (true)
+            //{
+            //    _mainForm.InformationTextLine("SmartClassroom");
+            //    Thread.Sleep(10);
+            //}
+            //Thread.Sleep(5000);
+            //while (true)
+            //{
+            //    if (_mainForm.InvokeRequired)
+            //    {
+            //        _mainForm.Invoke(new Any(_mainForm.Hide));
+            //    }
+            //    _mainForm.InformationTextLineInfo("Hide");
+            //    Thread.Sleep(1000);
+            //    if (_mainForm.InvokeRequired)
+            //    {
+            //        _mainForm.Invoke(new Any(_mainForm.Show));
+            //    }
+            //    _mainForm.InformationTextLineInfo("Show");
+            //    Thread.Sleep(1000);
+            //}
         }
-
     }
 }
