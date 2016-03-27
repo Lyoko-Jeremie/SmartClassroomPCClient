@@ -111,5 +111,23 @@ namespace SmartClassroomPCClient
             InformationTextLineInfo("Icon_MouseDoubleClick");
             this.Show();
         }
+
+        private void ToolStripMenuItemOpen_Click(object sender, EventArgs e)
+        {
+            InformationTextLineInfo("ToolStripMenuItemOpen_Click");
+            this.Show();
+        }
+
+        private void ToolStripMenuItemHide_Click(object sender, EventArgs e)
+        {
+            InformationTextLineInfo("ToolStripMenuItemHide_Click");
+            this.Hide();
+            notifyIcon.ShowBalloonTip(1000);
+        }
+
+        private void ToolStripMenuItemExit_Click(object sender, EventArgs e)
+        {
+            System.Environment.Exit(0);
+        }
     }
 }

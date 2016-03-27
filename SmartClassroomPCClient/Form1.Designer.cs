@@ -39,6 +39,12 @@
             this.InputCheckBox = new System.Windows.Forms.CheckBox();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
+            this.notifyIconContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.ToolStripMenuItemOpen = new System.Windows.Forms.ToolStripMenuItem();
+            this.ToolStripMenuItemHide = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.ToolStripMenuItemExit = new System.Windows.Forms.ToolStripMenuItem();
+            this.notifyIconContextMenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // BigTitile
@@ -143,10 +149,48 @@
             this.notifyIcon.BalloonTipIcon = System.Windows.Forms.ToolTipIcon.Info;
             this.notifyIcon.BalloonTipText = "SmartClassroom PC Client 已经最小化到右下角托盘图标了。\r\n您可以在任何时候双击图标调出界面，或者右键打开快捷菜单。";
             this.notifyIcon.BalloonTipTitle = "SmartClassroom PC Client";
+            this.notifyIcon.ContextMenuStrip = this.notifyIconContextMenuStrip;
             this.notifyIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon.Icon")));
             this.notifyIcon.Text = "SmartClassroom PC Client";
             this.notifyIcon.Visible = true;
             this.notifyIcon.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon_MouseDoubleClick);
+            // 
+            // notifyIconContextMenuStrip
+            // 
+            this.notifyIconContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ToolStripMenuItemOpen,
+            this.ToolStripMenuItemHide,
+            this.toolStripSeparator1,
+            this.ToolStripMenuItemExit});
+            this.notifyIconContextMenuStrip.Name = "contextMenuStrip1";
+            this.notifyIconContextMenuStrip.Size = new System.Drawing.Size(101, 76);
+            // 
+            // ToolStripMenuItemOpen
+            // 
+            this.ToolStripMenuItemOpen.Name = "ToolStripMenuItemOpen";
+            this.ToolStripMenuItemOpen.Size = new System.Drawing.Size(100, 22);
+            this.ToolStripMenuItemOpen.Text = "打开";
+            this.ToolStripMenuItemOpen.Click += new System.EventHandler(this.ToolStripMenuItemOpen_Click);
+            // 
+            // ToolStripMenuItemHide
+            // 
+            this.ToolStripMenuItemHide.Name = "ToolStripMenuItemHide";
+            this.ToolStripMenuItemHide.Size = new System.Drawing.Size(100, 22);
+            this.ToolStripMenuItemHide.Text = "隐藏";
+            this.ToolStripMenuItemHide.Click += new System.EventHandler(this.ToolStripMenuItemHide_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(97, 6);
+            // 
+            // ToolStripMenuItemExit
+            // 
+            this.ToolStripMenuItemExit.Name = "ToolStripMenuItemExit";
+            this.ToolStripMenuItemExit.ShowShortcutKeys = false;
+            this.ToolStripMenuItemExit.Size = new System.Drawing.Size(100, 22);
+            this.ToolStripMenuItemExit.Text = "退出";
+            this.ToolStripMenuItemExit.Click += new System.EventHandler(this.ToolStripMenuItemExit_Click);
             // 
             // Form1
             // 
@@ -169,6 +213,7 @@
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Form1";
+            this.notifyIconContextMenuStrip.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -184,6 +229,11 @@
         private System.Windows.Forms.CheckBox InputCheckBox;
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.NotifyIcon notifyIcon;
+        private System.Windows.Forms.ContextMenuStrip notifyIconContextMenuStrip;
+        private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemOpen;
+        private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemHide;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemExit;
     }
 }
 
