@@ -20,8 +20,9 @@ namespace SmartClassroomPCClient
             InitializeComponent();
             CommandToolHide();
             timer1.Start();
+            Program.StartBackgroundThread();
         }
-
+         
         private void InputCheckBox_CheckedChanged(object sender, EventArgs e)
         {
             if (this.InputCheckBox.Checked)
@@ -48,9 +49,9 @@ namespace SmartClassroomPCClient
             this.inputTextBox.Show();
         }
 
-        private void InformationTextLine(String line)
+        public void InformationTextLine(String line)
         {
-            lock (_informationText)
+            //lock (_informationText)
             {
                 _informationText += "\r\n" + line;
                 if (_informationText.Length > 8192)
@@ -60,7 +61,7 @@ namespace SmartClassroomPCClient
         
         private void timer1_Tick(object sender, EventArgs e)
         {
-            lock (_informationText)
+            //lock (_informationText)
             {
                 this.informationTextBox.Text = _informationText;
             }
