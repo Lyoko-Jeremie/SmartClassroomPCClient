@@ -27,7 +27,7 @@ namespace SmartClassroomPCClient
         private static readonly Thread BackgroundThread = new Thread(new ThreadStart(StartBackgroundThreadMain));
         private static bool _isBackgroundThreadRun = false;
         private static Form1 _mainForm;
-        private static System.Threading.Timer _timer_KeepAlive;
+        private static Timer _timerKeepAlive;
 
         public static Form1 MainForm => _mainForm;
 
@@ -49,11 +49,11 @@ namespace SmartClassroomPCClient
             if (r == SocketTaskFlag.ConnectFail)
             {
                 _mainForm.InformationTextLineError("KeepAliveSocket:" + r);
-                _timer_KeepAlive.Change(5 * 1000, 5 * 1000);
+                _timerKeepAlive.Change(5 * 1000, 5 * 1000);
             }
             else
             {
-                _timer_KeepAlive.Change(30 * 1000, 30 * 1000);
+                _timerKeepAlive.Change(30 * 1000, 30 * 1000);
             }
         }
 
@@ -63,7 +63,7 @@ namespace SmartClassroomPCClient
         {
             if (Config.ReadConfig())
             {
-                _timer_KeepAlive = new System.Threading.Timer(KeepAliveTimerThread, null, 0, 30 * 1000);
+                _timerKeepAlive = new System.Threading.Timer(KeepAliveTimerThread, null, 0, 30 * 1000);
             }
             else
             {
