@@ -61,7 +61,7 @@ namespace SmartClassroomPCClient
             }
         }
 
-        private delegate void Any();
+        public delegate void Any();
 
         private static void StartBackgroundThreadMain()
         {
@@ -76,12 +76,7 @@ namespace SmartClassroomPCClient
                 //Config.WriteConfig();
                 _mainForm.InformationTextLineError("ReadConfig Error...Exit.....");
                 Thread.Sleep(5000);
-                lock (StopProgramLock)
-                {
-                    StopProgram = true;
-                }
-                Application.Exit();
-                //System.Environment.Exit(-1);
+                Program.Exit();
             }
 
             //while (true)
@@ -106,5 +101,16 @@ namespace SmartClassroomPCClient
             //    Thread.Sleep(1000);
             //}
         }
+
+        public static void Exit()
+        {
+            lock (StopProgramLock)
+            {
+                StopProgram = true;
+            }
+            Application.Exit();
+        }
+
+
     }
 }
