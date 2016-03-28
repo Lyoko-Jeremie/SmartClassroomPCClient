@@ -127,6 +127,7 @@
             this.buttonSubmit.TabIndex = 3;
             this.buttonSubmit.Text = "Submit 提交";
             this.buttonSubmit.UseVisualStyleBackColor = false;
+            this.buttonSubmit.Click += new System.EventHandler(this.buttonSubmit_Click);
             // 
             // InputCheckBox
             // 

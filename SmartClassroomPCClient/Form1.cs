@@ -20,6 +20,7 @@ namespace SmartClassroomPCClient
             InitializeComponent();
             BigTitile.MouseDown += MouseDownDrop;
             this.MouseDown += MouseDownDrop;
+            inputTextBox.KeyDown += InputTextBoxEnterEvent;
 
             CommandToolHide();
             timer1.Start();
@@ -60,6 +61,10 @@ namespace SmartClassroomPCClient
         {
             InformationTextLine("[Info] " + line);
         }
+        public void InformationTextLineCmd(String line)
+        {
+            InformationTextLine("[CMD] " + line);
+        }
 
         public void InformationTextLine(String line)
         {
@@ -69,6 +74,11 @@ namespace SmartClassroomPCClient
                 if (_informationText.Length > 8192)
                     _informationText = _informationText.Substring(_informationText.Length - 8192);
             }
+        }
+
+        public void ClearInformationText()
+        {
+            _informationText = "";
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -129,5 +139,19 @@ namespace SmartClassroomPCClient
         {
             Program.Exit();
         }
+
+        private void buttonSubmit_Click(object sender, EventArgs e)
+        {
+            Program.CM.CommandString(inputTextBox.Text);
+            inputTextBox.Text = "";
+        }
+
+        private void InputTextBoxEnterEvent(object sender, KeyEventArgs keyEventArgs)
+        {
+            if (keyEventArgs.KeyCode != Keys.Enter) return;
+            Program.CM.CommandString(inputTextBox.Text);
+            inputTextBox.Text = "";
+        }
+
     }
 }

@@ -16,6 +16,8 @@ namespace SmartClassroomPCClient
         public static bool StopProgram = false;
         public static readonly Object StopProgramLock = new object();
 
+        public static CommandModule CM;
+
         /// <summary>
         /// 应用程序的主入口点。
         /// </summary>
@@ -35,6 +37,7 @@ namespace SmartClassroomPCClient
 
         public static Form1 MainForm => _mainForm;
 
+
         [STAThread]
         public static void StartBackgroundThread()
         {
@@ -44,21 +47,34 @@ namespace SmartClassroomPCClient
             _isBackgroundThreadRun = true;
         }
 
+        public static bool KeepAliveTimerThreadOutput { get; set; } = true;
+
         private static void KeepAliveTimerThread(object state)
         {
-            _mainForm.InformationTextLineInfo("KeepAliveTimerThread");
+            InformationTextLineKeepAliveTimerThreadInfo("KeepAliveTimerThread");
             ClientSocket cs = new ClientSocket();
             var r = cs.KeepAliveSocket(Config.ServerEndPoint);
-            _mainForm.InformationTextLineInfo("KeepAliveTimerThreadEnd");
+            InformationTextLineKeepAliveTimerThreadInfo("KeepAliveTimerThreadEnd");
             if (r == SocketTaskFlag.ConnectFail)
             {
-                _mainForm.InformationTextLineError("KeepAliveSocket:" + r);
+                InformationTextLineKeepAliveTimerThreadError("KeepAliveSocket:" + r);
                 _timerKeepAlive.Change(5 * 1000, 5 * 1000);
             }
             else
             {
                 _timerKeepAlive.Change(30 * 1000, 30 * 1000);
             }
+        }
+
+        private static void InformationTextLineKeepAliveTimerThreadInfo(string line)
+        {
+            if (!KeepAliveTimerThreadOutput) return;
+            _mainForm.InformationTextLineInfo(line);
+        }
+        private static void InformationTextLineKeepAliveTimerThreadError(string line)
+        {
+            if (!KeepAliveTimerThreadOutput) return;
+            _mainForm.InformationTextLineError(line);
         }
 
         public delegate void Any();
@@ -78,6 +94,7 @@ namespace SmartClassroomPCClient
                 Thread.Sleep(5000);
                 Program.Exit();
             }
+            Program.CM = new CommandModule();
 
             //while (true)
             //{
