@@ -127,7 +127,8 @@ namespace SmartClassroomPCClient
 
         private void ToolStripMenuItemExit_Click(object sender, EventArgs e)
         {
-            System.Environment.Exit(0);
+            Application.Exit();
+            //System.Environment.Exit(0);
         }
     }
 }

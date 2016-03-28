@@ -12,6 +12,10 @@ namespace SmartClassroomPCClient
 {
     static class Program
     {
+
+        public static bool StopProgram = false;
+        public static readonly Object StopProgramLock = new object();
+
         /// <summary>
         /// 应用程序的主入口点。
         /// </summary>
@@ -72,7 +76,12 @@ namespace SmartClassroomPCClient
                 //Config.WriteConfig();
                 _mainForm.InformationTextLineError("ReadConfig Error...Exit.....");
                 Thread.Sleep(5000);
-                System.Environment.Exit(-1);
+                lock (StopProgramLock)
+                {
+                    StopProgram = true;
+                }
+                Application.Exit();
+                //System.Environment.Exit(-1);
             }
 
             //while (true)

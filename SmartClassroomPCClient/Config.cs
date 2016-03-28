@@ -51,7 +51,10 @@ namespace SmartClassroomPCClient
                 ServerPort = Convert.ToInt32(port);
             }
 
-            ServerEndPoint = new IPEndPoint(ServerIp, ServerPort);
+            if (ok)
+            {
+                ServerEndPoint = new IPEndPoint(ServerIp, ServerPort);
+            }
 
             return ok;
         }
