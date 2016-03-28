@@ -63,7 +63,7 @@ namespace SmartClassroomPCClient
         {
             if (Config.ReadConfig())
             {
-                _timer_KeepAlive = new System.Threading.Timer(new System.Threading.TimerCallback(KeepAliveTimerThread), null, 0, 30 * 1000);
+                _timer_KeepAlive = new System.Threading.Timer(KeepAliveTimerThread, null, 0, 30 * 1000);
             }
             else
             {

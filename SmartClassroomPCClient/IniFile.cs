@@ -14,8 +14,10 @@ namespace SmartClassroomPCClient
 
     public class IniFile
     {
-        readonly string _path;
-        readonly string _exe = Assembly.GetExecutingAssembly().GetName().Name;
+        private readonly string _path;
+        private readonly string _exe = Assembly.GetExecutingAssembly().GetName().Name;
+
+        public string Path => _path;
 
         [DllImport("kernel32")]
         private static extern long WritePrivateProfileString(string section, string key, string value, string filePath);
