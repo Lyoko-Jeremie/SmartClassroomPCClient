@@ -62,7 +62,35 @@ namespace SmartClassroomPCClient
             }
             else
             {
-                _timerKeepAlive.Change(30 * 1000, 30 * 1000);
+                switch (r)
+                {
+                    case SocketTaskFlag.KeepAliveFail:
+                    case SocketTaskFlag.ConnectAboart:
+                        _timerKeepAlive.Change(30 * 1000, 30 * 1000);
+                        break;
+                    case SocketTaskFlag.ReciveTimeOut:
+                        _timerKeepAlive.Change(30 * 1000, 30 * 1000);
+                        break;
+                    case SocketTaskFlag.TaskShutdown:
+                        LocalCommand.Shutdown();
+                        _timerKeepAlive.Change(15 * 1000, 15 * 1000);
+                        break;
+                    case SocketTaskFlag.TaskRestart:
+                        LocalCommand.Restart();
+                        _timerKeepAlive.Change(15 * 1000, 15 * 1000);
+                        break;
+                    case SocketTaskFlag.TaskLogout:
+                        LocalCommand.Logout();
+                        _timerKeepAlive.Change(15 * 1000, 15 * 1000);
+                        break;
+                    case SocketTaskFlag.TaskNoThing:
+                    case SocketTaskFlag.TaskUnknow:
+                    case SocketTaskFlag.FormatError:
+                        _timerKeepAlive.Change(30 * 1000, 30 * 1000);
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
             }
         }
 
@@ -71,6 +99,7 @@ namespace SmartClassroomPCClient
             if (!KeepAliveTimerThreadOutput) return;
             _mainForm.InformationTextLineInfo(line);
         }
+
         private static void InformationTextLineKeepAliveTimerThreadError(string line)
         {
             if (!KeepAliveTimerThreadOutput) return;
@@ -83,7 +112,7 @@ namespace SmartClassroomPCClient
         {
             if (Config.ReadConfig())
             {
-                _timerKeepAlive = new System.Threading.Timer(KeepAliveTimerThread, null, 0, 30 * 1000);
+                _timerKeepAlive = new System.Threading.Timer(KeepAliveTimerThread, null, 0, 30*1000);
             }
             else
             {
@@ -127,7 +156,5 @@ namespace SmartClassroomPCClient
             }
             Application.Exit();
         }
-
-
     }
 }
