@@ -110,11 +110,7 @@ namespace SmartClassroomPCClient
 
         private static void StartBackgroundThreadMain()
         {
-            if (Config.ReadConfig())
-            {
-                _timerKeepAlive = new System.Threading.Timer(KeepAliveTimerThread, null, 0, 30*1000);
-            }
-            else
+            if (!Config.ReadConfig())
             {
                 //Config.ServerIp = IPAddress.Parse("127::1");
                 //Config.ServerPort = 7864;
@@ -123,7 +119,28 @@ namespace SmartClassroomPCClient
                 Thread.Sleep(5000);
                 Program.Exit();
             }
+            if (!LocalInfo.Init())
+            {
+                _mainForm.InformationTextLineError("Load LocalInfo Error...Exit.....");
+                Thread.Sleep(5000);
+                Program.Exit();
+            }
+
+            _timerKeepAlive = new System.Threading.Timer(KeepAliveTimerThread, null, 0, 30 * 1000);
+
             Program.CM = new CommandModule();
+
+
+            _mainForm.InformationTextLineInfo("Mac Address:");
+            foreach (var s in LocalInfo.MacAddr)
+            {
+                _mainForm.InformationTextLineInfo(s);
+            }
+            _mainForm.InformationTextLineInfo("Mac Address:");
+            foreach (var s in LocalInfo.GetMacAddressByNetworkInformation())
+            {
+                _mainForm.InformationTextLineInfo(s);
+            }
 
             //while (true)
             //{
